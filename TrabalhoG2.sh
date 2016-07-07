@@ -1,20 +1,21 @@
 #!/bin/bash
 
-# Trabalho G2
-# Linguagens Automação
-# Robson Gonçalves Larissa Pereira
+# Trabalho G2 Linguagens Automação
+# Robson Gonçalves Larissa Pereira e Jessica Paralta
 # 30/06/2016
-# Revisão 00
+
 
 # Menu principal, escolha do exercicio(módulo)
 sistema(){
+
+	touch /tmp/pastas.txt /tmp/listagem.txt /tmp/ip.txt /tmp/porta.txt /tmp/logmonitoramento.txt
 	menuprincipal=$( dialog \
 		--stdout \
 		--title 'Trabalho G2' \
 		--menu 'Escolha o módulo:' 0 0 0 \
 		1 'Gerenciamento de usuarios'\
 		2 'Monitoramento de sistemas e servicos'\
-		3 'Realizacao de backup'\
+		3 'Efetuar backup'\
 		4 'Verificar Rede'\
 		0 'Sair')
 	
@@ -33,13 +34,39 @@ sistema(){
 	esac
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Módulo 2.1 Gerencimento usuarios
 usuarios(){
 # Chama a função que exibe o menu de usuarios
 	menuusuarios
 }
+
+
+
 		
-menuusuarios(){	
+menuusuarios(){	''
 # Cria a tela de dialog com as opções disponiveis para o módulo de usuarios
 	menuusuarios=$( dialog \
 		--backtitle "Gerenciamento de usuários" \
@@ -65,14 +92,28 @@ menuusuarios(){
 		;;
 		5)listarusuarios
 		;;
-		0)sistema
+		0)
+		sistema
 	esac 
 
          		
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 # Função de criação do usuário
 criarusuario(){
+
 usuario=$( dialog \
 	--backtitle "Gerenciamento de usuários" \
 	--stdout \
@@ -81,7 +122,7 @@ usuario=$( dialog \
 	10 55)
   
 # Adiciona usuario
-	sudo useradd -m $usuario
+	useradd -m $usuario
 	
 # Se não ocorreram erros, exibe mensagem de sucesso
 	if [ "$?" = "0" ]; 
@@ -100,60 +141,81 @@ usuario=$( dialog \
 	fi	
 }
 
-# Função de alteração do usuario
-modificarusuario (){
-busca=$( 
-	dialog \
-	--backtitle "Gerenciamento de usuários" \
-	--stdout \
-	--title 'Modificar' \
-	--inputbox 'Usuário a ser modificado:' 8 50) \
-	
-# Busca o usuario no arquivo passwd	
-	grep -R $busca /etc/passwd
-	
-	if [ "$?" = "0" ];
-	then 
-# Se o usuario existir, pede algumas informações pro usuario
-		usuario=$(dialog \
-			--stdout \
-			--title "Modificar" \
-			--inputbox "Informe o nome completo do usuario:" 0 0)
-		
-		senha=$(dialog \
-			--stdout \
-			--insecure \
-			--title 'Modificar' \
-			--passwordbox 'Informe a senha do usuario: ' 0 0)
-	
-		ShellName=$(dialog \
-			--stdout \
-			--title 'Modificar' \
-			--radiolist 'Informe o shell do usuario:' \
-			0 0 0 \
-			"/usr/sbin/nologin" nologin off \
-			"/bin/false" 'false' off \
-			"/bin/sh" 'sh' on \
-			"/bin/ksh" 'ksh' off \
-			"/bin/bash" 'bash' off)
 
-# Altera o comentario de senha, senha e login de shell	
-			sudo usermod -c "$usuario" $busca
-			sudo usermod -p $(openssl passwd -1 $senha) $busca
-			sudo usermod -s "$ShellName" $busca
-			
-# Se não encontrar o usuario apresenta a mensagem
-	else if [ "$?" = "1" ]; 
-	then
+
+
+
+
+
+
+#Função de alteração do usuario
+
+modificarusuario (){
+	busca=$( 
 		dialog \
 		--backtitle "Gerenciamento de usuários" \
-		--title "Modificar" \
-		--msgbox "Usuário $busca não encontrado!" 6 40	
-		modificarusuario
+		--stdout \
+		--title 'Modificar' \
+		--inputbox 'Usuário a ser modificado:' 8 50) \
+		
+	# Busca o usuario no arquivo passwd	
+	grep -R $busca /etc/passwd
+		
+	if [ "$?" = "0" ];
+		then 
+	# Se o usuario existir, pede algumas informações pro usuario
+			#usuario=$(dialog \
+			#	--stdout \
+			#	--title "Modificar" \
+			#	--inputbox "Informe o nome do usuario:" 0 0)
+			
+			senha=$(dialog \
+				--stdout \
+				--insecure \
+				--title 'Modificar' \
+				--passwordbox 'Informe a senha do usuario: ' 0 0)
+		
+			ShellName=$(dialog \
+				--stdout \
+				--title 'Modificar' \
+				--radiolist 'Informe o shell do usuario:' \
+				0 0 0 \
+				"/usr/sbin/nologin" nologin off \
+				"/bin/false" 'false' off \
+				"/bin/sh" 'sh' on \
+				"/bin/ksh" 'ksh' off \
+				"/bin/bash" 'bash' off)
+
+	# Altera o comentario de senha, senha e login de shell	
+			#usermod -c "$usuario" $busca
+			usermod -p $(openssl passwd -1 $senha) $busca
+			usermod -s "$ShellName" $busca
+				
+	# Se não encontrar o usuario apresenta a mensagem
+		else if [ "$?" = "1" ]; 
+			then
+				dialog \
+				--backtitle "Gerenciamento de usuários" \
+				--title "Modificar" \
+				--msgbox "Usuário $busca não encontrado!" 6 40	
+				modificarusuario
+		fi
+	
 	fi
-menuusuarios
-fi
+	menuusuarios
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 excluirusuario (){
 
@@ -187,11 +249,28 @@ usuario=$( dialog \
 		dialog \
 		--backtitle "Gerenciamento de usuários" \
 		--title "Erro" \
-		--msgbox "Usuário $usuario não foi removio" 6 40
-		excluirusuario
+		--msgbox "Usuário $usuario não foi removido" 6 40
+		menuusuarios
 	fi
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 procurarusuario (){
@@ -229,19 +308,26 @@ busca=$( dialog \
 			--backtitle "Gerenciamento de usuários" \
 			--title "Procurar" \
 			--msgbox "Usuário $busca não foi encontrado!" 6 40	
-			procurarusuario
+			menuusuarios
 		fi
 	fi
 fi	
 }
 
 
+
+
+
+
+
+
+
 listarusuarios(){
 
 # cria o arquivo listagem.txt
-ls /home > listagem.txt
+ls /home > /tmp/listagem.txt
 
-dialog --menu 'Usuários do Sistema' 0 0 10 $(cat /listagem.txt | cut -d: -f1,3 | sed 's/$/ o/')
+dialog --menu 'Usuários do Sistema' 0 0 10 $(cat /tmp/listagem.txt | cut -d: -f1,3 | sed 's/$/ o/')
 	
 	if [ "$?" = "1" ];
 	then
@@ -262,6 +348,39 @@ dialog --menu 'Usuários do Sistema' 0 0 10 $(cat /listagem.txt | cut -d: -f1,3 
 	fi
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Módulo 2.2 Monitoramento de sistemas e servicos
@@ -320,6 +439,10 @@ monitoraip(){
 	monitoramento
 }
 
+
+
+
+
 # Função que insere a porta a ser monitorada
 monitoraporta(){
 	porta=$( dialog \
@@ -350,6 +473,12 @@ monitoraporta(){
 	monitoramento
 }
 
+
+
+
+
+
+
 # Faz o monitoramento
 monitoramentosistema(){
 # Obtem as informacoes de porta e ip e cria o arquivo de log.
@@ -362,9 +491,14 @@ monitoramentosistema(){
 	10 60 );
 
 # Obtem as informacoes dos pacotes da rede	
-	nmap -iL /tmp/ip.txt -p $portas >> /tmp/logmonitoramento.txt
+	nmap -sU -iL /tmp/ip.txt -p $portas >> /tmp/logmonitoramento.txt
 	monitoramento
 }
+
+
+
+
+
 
 # Funcao de log do monitoramento
 logmonitoramento(){
@@ -376,8 +510,8 @@ logmonitoramento(){
 		dialog \
 		--backtitle 'Monitoramento de sistemas e servicos' \
 		--title "Monitoramento" \
-		--msgbox $logmonitoramento \
-		10 60
+		--msgbox "{$logmonitoramento}" \
+		100 300
 	else
 		$( dialog \
 		--backtitle 'Monitoramento de sistemas e servicos' \
@@ -387,6 +521,27 @@ logmonitoramento(){
 	fi
 	monitoramento
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Módulo 2.3 Realização Backup
 
@@ -410,12 +565,29 @@ menubackup(){
 		;;
 		2)agendamento
 		;;		
-		3)backupbase
+		3)opcaobackup
 		;;
 		4)logsbackup
 		;;
 		0)sistema
 	esac 
+}
+
+opcaobackup (){
+	back=$( dialog \
+                --stdout \
+                --title 'Realizacao de backup' \
+                --menu 'Selecione a opção desejada:' 0 0 0 \
+                1 'Backup Local' \
+                2 'Backup entre maquinas' \
+                0 'Voltar ao sistema')
+          case $back in
+            1) backupbase
+            ;;
+            2) backupentremaquinas
+            ;;
+            0)sistema
+        esac
 }
 
 # Insere pastas
@@ -445,55 +617,122 @@ pasta=$( dialog \
 menubackup
 }
 
+
+
+
+
+
+
+backupentremaquinas() {
+
+maquina1="127.0.0.1"
+maquina2="127.0.0.1"
+
+    maquinas=$( dialog \
+                --stdout \
+                --title 'Realizacao de backup'\
+                --menu 'Selecione a opção desejada:' 0 0 0 \
+                1 'Backup da máquina 1 para máquina 2' \
+                2 'Backup da máquina 2 para máquina 1' \
+                0 'Voltar ao sistema')
+          case $maquinas in
+            1) 
+			#tar -cvzpf bkpstore/backup.tar.gz -T ${maquina1}${pastas} ${maquina2}
+			backupbase ; for i in $(cat $pastas); do rsync -avz $i root@$maquina2:/home/reweb/Desktop/ROBSON/Unilasalle/Automacao/Shell/maquina2 ; done
+            ;;
+            2) 
+			#tar -cvzpf bkpstore/backup.tar.gz -T ${maquina2}${pastas} ${maquina1}
+			backupbase ; for i in $(cat $pastas); do rsync -avz root@$maquina2:/home/reweb/Desktop/ROBSON/Unilasalle/Automacao/Shell/maquina2 /home/reweb/Desktop/ROBSON/Unilasalle/Automacao/Shell/maquina1 ; done
+			#backupbase ; rsync -avz root@$maquina2:/home/reweb/Desktop/ROBSON/Unilasalle/Automacao/Shell/maquina1 $pastas
+            ;;
+            0)
+			sistema
+        esac
+
+}
+
+
+
+
+
+
+
 # Função de agendamento do backup 
 agendamento(){
-	minuto=$(dialog \
+
+#Dialog recebe o caminho destino do backup
+    path_destino=`dialog --stdout --title 'Caminho' --inputbox 'Digite o caminho de destino:' 10 40`
+
+#Dialog recebe o caminho origem do backup
+    path_origem=`dialog --stdout --title 'Caminho' --inputbox 'Digite o(s) caminho(s) de origem:' 10 40`
+	  
+#Criará o diretório destino caso não exista
+	if [ ! -d $path_destino ] 
+	then 
+	  mkdir $path_destino #diretório sendo criado
+	  echo 'Criado diretório de Destino'
+	fi
+
+	m=$(dialog \
 	--stdout \
 	--inputbox 'Informe o minuto:' 6 40
 	);
-	hora=$(dialog \
+	h=$(dialog \
 	--stdout \
 	--inputbox 'Informe a hora:' 6 40
 	);
-	diaDoMes=$(dialog \
+	d=$(dialog \
 	--stdout \
 	--inputbox 'Informe o dia do mês:' 6 40
 	);
-	mes=$(dialog \
+	M=$(dialog \
 	--stdout \
 	--inputbox 'Informe o mês:' 6 40
 	);
-	diaDaSemana=$(dialog \
+	s=$(dialog \
 	--stdout \
 	--inputbox 'Informe o dia da semana:' 6 40
 	);
-	mes=$(dialog \
-	--stdout \
-	--inputbox 'Informe o mês:' 6 40
-	);
-	usuarioLogado=`whoami`;
+	#mes=$(dialog \
+	#--stdout \
+	#--inputbox 'Informe o mês:' 6 40
+	#);
+
+	#c="backupbase"
+	c="tar -czf $path_destino/$file_bkp $path_origem"
+	#usuarioLogado=`whoami`;
 	
-	crontab -e
+	#crontab -e -u $usuarioLogado
 	
-	echo $minuto
-	echo "\t"
-	echo $hora
-	echo "\t"
-	echo $diaDoMes
-	echo "\t"
-	echo $mes
-	echo "\t"
-	echo $diaDaSemana
-	echo "\t"
-	echo $usuarioLogado
-	echo "\t"
-	echo backupbase
+
+	echo $m $h $d $M $s $c > agd
+	crontab -< agd
+
+	#echo $minuto
+	#echo "\t"
+	#echo $hora
+	#echo "\t"
+	#echo $diaDoMes
+	#echo "\t"
+	#echo $mes
+	#echo "\t"
+	#echo $diaDaSemana
+	#echo "\t"
+	#echo $usuarioLogado
+	#echo "\t"
+	#echo backupbase
 	
+	
+
 	if [ $? -eq 0 ];
 	then
+		cronlist=$(crontab -l)
+
 		dialog \
 		--infobox "Processo de backup agendado." \
-		6 40;
+		--msgbox "{$cronlist}"
+		
+		12 80;
 	else
 		dialog \
 		--infobox "Erro ao agendar processo de backup" \
@@ -502,15 +741,32 @@ agendamento(){
 	monitoramento
 }
 
+
+
+
 # Realiza o backup
 backupbase(){
-	tar cvzf bkpstore/backup.tar.gz -T /tmp/pastas.txt	
+	mkdir -p bkpstore
+	tar Pcvzf bkpstore/backup.tar.gz -T /tmp/pastas.txt
+
+		dialog \
+		--backtitle "Backup" \
+		--title "Backup" \
+		--msgbox "Backup efetuado com sucesso." 6 40
+		menubackup
+
+
 }
 
 
 logsbackup(){
 # exibe as pastas e os arquivos do backup que se encontram no caminho definido para backup
-	tar tvzf bkpstore/backup.tar.gz
+	#tar tvzf bkpstore/backup.tar.gz
+	logs=`tar tvzf bkpstore/backup.tar.gz`
+
+	dialog --backtitle 'Logs Backup' --title "Logs Backup" --msgbox "{$logs}" 20 100
+
+	menubackup
 }
 
 # Inicio do programa, chamada da função sistema
