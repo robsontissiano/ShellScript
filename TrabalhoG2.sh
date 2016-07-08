@@ -625,8 +625,8 @@ menubackup
 
 backupentremaquinas() {
 
-maquina1="127.0.0.1"
-maquina2="127.0.0.1"
+maquina1="10.31.6.149"
+maquina2="10.31.7.52"
 
     maquinas=$( dialog \
                 --stdout \
