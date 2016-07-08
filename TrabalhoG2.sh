@@ -828,7 +828,8 @@ VerificarTrafego(){
 
 
 MostrarIP(){
-	IP=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+	IP=$(ifconfig eth0 | grep "inet addr")
+	#IP=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 	if [ $? -eq 0 ];
 	then
 		dialog \
