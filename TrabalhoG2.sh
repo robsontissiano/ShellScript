@@ -638,11 +638,11 @@ maquina2="10.31.7.52"
           case $maquinas in
             1) 
 			#tar -cvzpf bkpstore/backup.tar.gz -T ${maquina1}${pastas} ${maquina2}
-			backupbase ; for i in $(cat $pastas); do rsync -avz $i root@$maquina2:/home/aluno/backups-maquina2 ; done
+			backupbase ; for i in $(cat $pastas); do rsync -avz $i root@$maquina2:/home/aluno/backups-maquina1 ; done
             ;;
             2) 
 			#tar -cvzpf bkpstore/backup.tar.gz -T ${maquina2}${pastas} ${maquina1}
-			backupbase ; for i in $(cat $pastas); do rsync -avz root@$maquina2:/home/aluno/backup-origem/$i /home/aluno/backup-maquina1 ; done
+			backupbase ; for i in $(cat $pastas); do rsync -avz root@$maquina2:/$i /home/aluno/backup-maquina2 ; done
 			#backupbase ; rsync -avz root@$maquina2:/home/reweb/Desktop/ROBSON/Unilasalle/Automacao/Shell/maquina1 $pastas
             ;;
             0)
