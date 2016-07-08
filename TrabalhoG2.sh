@@ -812,7 +812,8 @@ menurede(){	''
 
 
 VerificarTrafego(){
-	trafego=$(iperf -t 10 -c 10.31.7.52 > /tmp/trafego)
+	iperf -t 10 -c 10.31.7.52 > /tmp/trafego
+	trafego=$(cat /tmp/trafego)
 	if [ $? -eq 0 ];
 	then
 		dialog \
