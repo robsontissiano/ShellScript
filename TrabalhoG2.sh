@@ -765,5 +765,89 @@ logsbackup(){
 	menubackup
 }
 
+
+
+
+
+# Módulo 2.4 Verificar performance do enlace
+rede(){
+# Chama a função que exibe o menu de rede
+	menurede
+}
+
+
+
+
+menurede(){	''
+# Cria a tela de dialog com as opções disponiveis para o módulo de rede
+	menuderede=$( dialog \
+		--backtitle "Gerenciamento de rede" \
+		--stdout \
+		--title 'Gerenciamento de rede' \
+		--menu 'Escolha um opção:' 0 0 0 \
+		1 'Verifiar trafego'\
+		2 'Mostrar IP'\
+		3 'Mostrar Gateway'\
+		4 'Pingar IP'\
+		5 'Traçar rota'\
+		0 'Sair')
+	
+# Chama a função conforme escolhido pelo usuario 
+	case $menuderede in
+		1)VerifiarTrafego
+		;;
+		2)MostrarIP
+		;;
+		3)MostrarGateway
+		;;
+		4)PingarIP
+		;;
+		5)TracarRota
+		;;
+		0) sistema
+	esac 
+
+         		
+}
+
+
+VerificarTrafego(){
+	trafego=$(iperf -t 10 -c 10.31.7.52 > /tmp/trafego)
+	if [ $? -eq 0 ];
+	then
+		dialog \
+		--backtitle 'Monitoramento de trafego' \
+		--title "Monitoramento" \
+		--msgbox "{$trafego}" \
+		100 300
+	fi
+}
+
+
+
+MostrarIP(){
+	IP=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+}
+
+
+MostrarGateway(){
+	GATEWAY=$(/sbin/ip route | awk '/default/ { print $3 }')
+	#echo $GATEWAY
+}
+
+
+PingarIP(){
+	ipdestino="8.8.8.8"
+	ping -c 4 $ipdestino | tee ~/ping.log
+}
+
+TracarRota(){
+	mtr --interval 5 $destino
+}
+
+
+
 # Inicio do programa, chamada da função sistema
 sistema
+
+
