@@ -794,7 +794,7 @@ menurede(){	''
 	
 # Chama a função conforme escolhido pelo usuario 
 	case $menuderede in
-		1)VerifiarTrafego
+		1)VerificarTrafego
 		;;
 		2)MostrarIP
 		;;
