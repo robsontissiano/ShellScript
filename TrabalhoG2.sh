@@ -623,12 +623,22 @@ maquina2="10.31.7.52"
 			#backupbase ; for i in $(cat $pastas); do rsync -avz $i root@$maquina2:/home/aluno/backups-maquina1 ; done
 			#backupbase ; 
 			rsync -avz bkpstore/backup.tar.gz root@$maquina1:/home/aluno/backups-maquina1/
+			dialog \
+			--backtitle "Backup" \
+			--title "Backup" \
+			--msgbox "Backup efetuado com sucesso." 6 40
+			menubackup			
             ;;
             2) 
 			#tar -cvzpf bkpstore/backup.tar.gz -T ${maquina2}${pastas} ${maquina1}
 			#backupbase ; for i in $(cat $pastas); do rsync -avz root@$maquina2:/$i /home/aluno/backup-maquina2 ; done
 			#backupbase ; 
 			rsync -avz root@$maquina1:/root/bkpstore/backup.tar.gz /home/aluno/backup-maquina2/
+			dialog \
+			--backtitle "Backup" \
+			--title "Backup" \
+			--msgbox "Backup efetuado com sucesso." 6 40
+			menubackup			
 			#backupbase ; rsync -avz root@$maquina2:/home/reweb/Desktop/ROBSON/Unilasalle/Automacao/Shell/maquina1 $pastas
             ;;
             0)
