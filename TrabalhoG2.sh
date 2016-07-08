@@ -642,7 +642,7 @@ maquina2="10.31.7.52"
             ;;
             2) 
 			#tar -cvzpf bkpstore/backup.tar.gz -T ${maquina2}${pastas} ${maquina1}
-			backupbase ; for i in $(cat $pastas); do rsync -avz root@$maquina2:/home/aluno/bacukp-origem /home/aluno/backup-maquina1 ; done
+			backupbase ; for i in $(cat $pastas); do rsync -avz root@$maquina2:/home/aluno/backup-origem/$i /home/aluno/backup-maquina1 ; done
 			#backupbase ; rsync -avz root@$maquina2:/home/reweb/Desktop/ROBSON/Unilasalle/Automacao/Shell/maquina1 $pastas
             ;;
             0)
