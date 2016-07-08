@@ -92,8 +92,7 @@ menuusuarios(){	''
 		;;
 		5)listarusuarios
 		;;
-		0)
-		sistema
+		0) sistema
 	esac 
 
          		
