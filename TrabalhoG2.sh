@@ -818,32 +818,53 @@ VerificarTrafego(){
 	then
 		dialog \
 		--backtitle 'Monitoramento de trafego' \
-		--title "Monitoramento" \
+		--title "Gerenciamento de rede" \
 		--msgbox "{$trafego}" \
 		100 300
 	fi
+	menurede
 }
 
 
 
 MostrarIP(){
 	IP=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+	if [ $? -eq 0 ];
+	then
+		dialog \
+		--backtitle 'IP de rede' \
+		--title "Gerenciamento de rede" \
+		--msgbox "{$IP}" \
+		100 300
+	fi	
+	menurede
 }
 
 
 MostrarGateway(){
 	GATEWAY=$(/sbin/ip route | awk '/default/ { print $3 }')
+	if [ $? -eq 0 ];
+	then
+		dialog \
+		--backtitle 'GATEWAY de rede' \
+		--title "Gerenciamento de rede" \
+		--msgbox "{$GATEWAY}" \
+		100 300
+	fi		
 	#echo $GATEWAY
+	menurede
 }
 
 
 PingarIP(){
 	ipdestino="8.8.8.8"
 	ping -c 4 $ipdestino | tee ~/ping.log
+	menurede
 }
 
 TracarRota(){
 	mtr --interval 5 $destino
+	menurede
 }
 
 
